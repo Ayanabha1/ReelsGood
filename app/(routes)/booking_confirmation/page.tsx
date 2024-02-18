@@ -41,11 +41,7 @@ const Page = () => {
       let groupedSeats = __seats ? Object.values(__seats) : [];
 
       const __QRvalue = {
-        seats: groupedSeats,
-        cinema_name: streamingDetails?.cinema?.name,
-        movie_name: streamingDetails?.movie?.name,
-        date: getDate(streamingDetails?.date),
-        time: getTime(streamingDetails?.date),
+        bookingToken: bookingToken,
       };
 
       setQRvalue(__QRvalue);
@@ -110,7 +106,7 @@ const Page = () => {
 
               <div className="flex flex-col items-center flex-grow">
                 <span className="text-lg">{totalSeats} Ticket(s)</span>
-                <div className="flex gap-1">
+                <div className="flex flex-col gap-2">
                   {seats?.map((group: any, i: number) => (
                     <div className="flex flex-wrap gap-1">
                       <span key={i}>{group.group} - </span>

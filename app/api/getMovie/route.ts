@@ -8,6 +8,10 @@ export async function GET(req: Request) {
   try {
     const movie = await prismaDB.movie.findUnique({
       where: { id: movie_id },
+      include: {
+        movie_picture: true,
+        movie_cast: { include: { actor: true } },
+      },
     });
 
     const cinemas = await prismaDB.streaming.findMany({

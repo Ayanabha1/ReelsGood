@@ -214,7 +214,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                           return (
                             <div
                               key={seat?.primary_id}
-                              className={`border  rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden text-sm cursor-pointer bg-gray-400 text-black`}
+                              className={`border  rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden text-sm cursor-not-allowed bg-[#9F9FA3] text-black`}
                             >
                               {seat?.id}
                             </div>
@@ -223,8 +223,8 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                           return (
                             <div
                               key={seat?.primary_id}
-                              className={`border border-[#72BA9D] rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden text-sm cursor-pointer text-[#72BA9D] hover:bg-[#72ba9d94] hover:text-white ${
-                                seat.selected && "bg-[#72BA9D] text-white"
+                              className={`border  rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden cursor-pointer text-md transition-all duration-300 hover:bg-[#b99b22] text-black ${
+                                seat.selected ? "bg-[#E7BA01]" : "bg-[#fff]"
                               }`}
                               onClick={() => {
                                 selectSeat(
@@ -245,7 +245,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                             key={seat?.primary_id}
                             className="rounded-sm h-7 w-7 flex items-center justify-center overflow-hidden text-sm"
                           >
-                            <div className="h-3 w-3 border rounded-full"></div>
+                            {/* <div className="h-3 w-3 border rounded-full"></div> */}
                           </div>
                         );
                       }
@@ -255,29 +255,6 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Seat index */}
-        <div className="mt-10 flex gap-5">
-          <div className="flex gap-2 items-center">
-            <div
-              className={`border border-[#72BA9D] rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer text-[#72BA9D]`}
-            ></div>
-            <span>Available</span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <div
-              className={`border border-[#72BA9D] rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer bg-[#72BA9D] text-white`}
-            ></div>
-            <span>Selected</span>
-          </div>
-
-          <div className="flex gap-2 items-center">
-            <div
-              className={`border  rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer bg-gray-400 text-black`}
-            ></div>
-            <span>Reserved</span>
-          </div>
         </div>
 
         {/* screen here */}
@@ -292,7 +269,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
       {selectedSeatIds.length ? (
         <div className="fixed left-0 bottom-0 w-full p-4 bg-[rgb(36,36,36)] border text-white flex items-center justify-center">
           <Button
-            className="bg-[#72BA9D] py-4 px-14 text-lg"
+            className="bg-[#E7BA01] py-4 px-14 text-lg"
             onClick={() => {
               reserveSeat();
             }}
@@ -301,6 +278,29 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
           </Button>
         </div>
       ) : null}
+
+      {/* Seat index */}
+      <div className="mt-10 flex justify-center gap-5">
+        <div className="flex gap-2 items-center">
+          <div
+            className={`border  rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer bg-[#9F9FA3] text-black`}
+          ></div>
+          <span>Reserved</span>
+        </div>
+        <div className="flex gap-2 items-center">
+          <div
+            className={`border bg-[#fff] rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm`}
+          ></div>
+          <span>Available</span>
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <div
+            className={`border bg-[#E7BA01] rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer`}
+          ></div>
+          <span>Selected</span>
+        </div>
+      </div>
     </div>
   );
 };

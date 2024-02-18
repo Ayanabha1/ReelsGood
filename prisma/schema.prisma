@@ -27,6 +27,10 @@ model movie {
   rating        Float           @default(1)
   description   String
   streaming     streaming[]
+  duration      String
+  language      String
+  pg_rating     String
+  trailer_url   String?
   created_at    DateTime        @default(now())
   updated_at    DateTime        @default(now())
   movie_picture movie_picture[]
