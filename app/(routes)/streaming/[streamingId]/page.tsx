@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getDate2, getTime } from "@/lib/commonFunctions";
 import { stripe } from "@/lib/stripe";
 import { useUser } from "@clerk/nextjs";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, MoveLeftIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -159,20 +159,22 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
 
   return (
     <div
-      className={`flex flex-col gap-4 relative px-6 py-4 ${
+      className={`flex flex-col gap-4 relative px-3 sm:px-6 py-4 ${
         selectedSeatIds.length && "pb-24"
-      }`}
+      } text-sm sm:text-lg`}
     >
       {/* Movie and cinema details */}
-      <div className="flex gap-2 items-center ">
+      <div className="flex gap-2 items-start sm:items-center ">
         <Link href={`/movies/${movieDetails?.id}`}>
-          <ChevronLeftIcon className="h-7 w-7" />
+          <MoveLeftIcon className="h-8 w-8" />
         </Link>
         {/* movie details */}
         {cinemaDetails && movieDetails && (
           <div className="flex flex-col">
             <div>
-              <span className="text-xl flex gap-2">{movieDetails?.name}</span>
+              <span className="text-lg sm:text-xl flex gap-2">
+                {movieDetails?.name}
+              </span>
             </div>
             <div className="text-sm">
               <span>{cinemaDetails?.name}</span>
@@ -214,7 +216,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                           return (
                             <div
                               key={seat?.primary_id}
-                              className={`border  rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden text-sm cursor-not-allowed bg-[#9F9FA3] text-black`}
+                              className={`border  rounded-sm h-6 w-6 sm:h-8 sm:w-8   flex items-center justify-center overflow-hidden text-[12px] sm:text-sm cursor-not-allowed bg-[#9F9FA3] text-black`}
                             >
                               {seat?.id}
                             </div>
@@ -223,7 +225,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                           return (
                             <div
                               key={seat?.primary_id}
-                              className={`border  rounded-sm h-7 w-7  flex items-center justify-center overflow-hidden cursor-pointer text-md transition-all duration-300 hover:bg-[#b99b22] text-black ${
+                              className={`border  rounded-sm h-6 w-6 sm:h-8 sm:w-8  flex items-center justify-center overflow-hidden text-[12px] sm:text-sm cursor-pointer text-md transition-all duration-300 hover:bg-[#b99b22] text-black ${
                                 seat.selected ? "bg-[#E7BA01]" : "bg-[#fff]"
                               }`}
                               onClick={() => {
@@ -243,7 +245,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
                         return (
                           <div
                             key={seat?.primary_id}
-                            className="rounded-sm h-7 w-7 flex items-center justify-center overflow-hidden text-sm"
+                            className="rounded-sm h-6 w-6 sm:h-8 sm:w-8  flex items-center justify-center overflow-hidden text-[12px]"
                           >
                             {/* <div className="h-3 w-3 border rounded-full"></div> */}
                           </div>
@@ -259,9 +261,12 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
 
         {/* screen here */}
         <div className="flex flex-col items-center mt-[50px]">
-          <div className="relative h-6 w-72">
-            <Image src="/screen.png" alt="screen here" fill />
-          </div>
+          <img
+            loading="lazy"
+            className="h-6 w-96 mb-2"
+            src="/screen.png"
+            alt="screen here"
+          />
           <span className="text-sm">All eyes this way please!</span>
         </div>
       </div>
@@ -280,7 +285,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
       ) : null}
 
       {/* Seat index */}
-      <div className="mt-10 flex justify-center gap-5">
+      <div className="mt-10 flex flex-wrap justify-center gap-5">
         <div className="flex gap-2 items-center">
           <div
             className={`border  rounded-sm h-4 w-4  flex items-center justify-center overflow-hidden text-sm cursor-pointer bg-[#9F9FA3] text-black`}
