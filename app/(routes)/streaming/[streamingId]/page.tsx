@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface SeatInterface {
-  booking?: any;
+  booked_seat?: any;
   primary_id: number;
   id: string;
   row: string;
@@ -147,7 +147,9 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
       });
       const resData: BookingResponseInterface = await res.json();
       const stripeSessionUrl = resData.stripe_session_url!;
-      window.location.href = stripeSessionUrl;
+      if (stripeSessionUrl) {
+        window.location.href = stripeSessionUrl;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -211,7 +213,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
 
                     {seatRow?.seats?.map((seat: SeatInterface) => {
                       if (seat?.is_seat) {
-                        if (seat?.booking?.length > 0) {
+                        if (seat?.booked_seat?.length > 0) {
                           // reserved seat
                           return (
                             <div

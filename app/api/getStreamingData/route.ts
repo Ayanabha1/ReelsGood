@@ -17,13 +17,12 @@ export async function GET(req: Request) {
       where: { cinema_id: cinemaId! },
       include: {
         seat_group: true,
-        booking: {
+        booked_seat: {
           where: {
             streaming_id: streamingId,
           },
           select: {
             seat_primary_id: true,
-            status: true,
           },
         },
       },

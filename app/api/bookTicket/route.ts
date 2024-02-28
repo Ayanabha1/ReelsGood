@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 async function isSeatAvailable(seatId: number, streaming_id: number) {
   try {
-    const seat = await prismaDB.booking.findMany({
+    const seat = await prismaDB.booked_seat.findMany({
       where: {
         seat_primary_id: seatId,
         streaming_id: streaming_id,
@@ -123,20 +123,26 @@ export async function POST(req: Request) {
         if (!bookable) {
           throw new Error("Selected seat(s) is/are not available");
         } else {
+          let booking = await tx.booking.create({
+            data: {
+              customer_id: customerId,
+              streaming_id: streamingId,
+              booking_token: bookingToken,
+              status: "PENDING",
+            },
+          });
+          const bookingId = booking.id;
           let promises = seatIds.map((seat: number) =>
-            tx.booking.create({
+            tx.booked_seat.create({
               data: {
-                customer_id: customerId,
                 seat_primary_id: seat,
                 streaming_id: streamingId,
-                booking_token: bookingToken,
-                status: "PENDING",
+                booking_id: bookingId,
               },
             })
           );
-
-          const bookings = await Promise.all(promises);
-          return bookings;
+          const bookedSeats = await Promise.all(promises);
+          return bookedSeats;
         }
       })
       .catch((err) => {

@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const bookingToken: string = searchParams.get("booking_token")!;
+    const customerId: string = searchParams.get("customer_id")!;
 
-    const bookingDetails = await prismaDB.booking.findMany({
-      where: { booking_token: bookingToken },
+    const bookings = await prismaDB.booking.findMany({
+      where: { customer_id: customerId, status: "BOOKED" },
       include: {
         payment: true,
         streaming: {
@@ -32,23 +32,12 @@ export async function GET(req: Request) {
       },
     });
 
-    if (bookingDetails.length === 0) {
+    if (bookings.length === 0) {
       throw new Error("Invalid request ... No booking exists with given token");
     }
 
-    if (
-      bookingDetails[0]?.status === "PENDING" ||
-      !bookingDetails[0]?.payment_id
-    ) {
-      throw new Error(
-        "Taking longer than usual to process payment ... Please refresh the page and check again"
-      );
-    }
-
-    const streaming_id = bookingDetails[0]?.streaming_id;
-
     return NextResponse.json({
-      bookingDetails: bookingDetails[0],
+      bookings: bookings,
     });
   } catch (error: any) {
     const err =

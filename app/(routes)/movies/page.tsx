@@ -12,7 +12,7 @@ const page = async () => {
   const movies = data?.movies;
   return (
     <div className="px-6 py-4">
-      <title>Movies - ReelRush</title>
+      <title>Movies - ReelsGood</title>
       <h1 className="text-2xl mb-4">Movies streaming near you</h1>
 
       {/* Movie list */}

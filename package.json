@@ -1,5 +1,5 @@
 {
-  "name": "reelrush",
+  "name": "reelsgood",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,6 +21,8 @@
     "react-dom": "^18",
     "react-player": "^2.14.1",
     "react-qr-code": "^2.0.12",
+    "react-share": "^5.1.0",
+    "react-toastify": "^10.0.4",
     "stripe": "^14.17.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"

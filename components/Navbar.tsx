@@ -1,7 +1,7 @@
-import { UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Image from "next/image";
 import Link from "next/link";
+import CustomUserButton from "./CustomUserButton";
 
 const Navbar = () => {
   return (
@@ -10,9 +10,9 @@ const Navbar = () => {
         <div className="relative h-8 w-10">
           <Image src="/logo.png" alt="logo" fill />
         </div>
-        ReelRush
+        ReelsGood
       </Link>
-      <UserButton appearance={{ baseTheme: dark }} afterSignOutUrl="/" />
+      <CustomUserButton />
     </nav>
   );
 };

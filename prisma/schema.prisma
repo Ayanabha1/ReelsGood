@@ -71,15 +71,15 @@ model cinema {
 }
 
 model seat {
-  primary_id    Int         @id @default(autoincrement())
+  primary_id    Int           @id @default(autoincrement())
   id            String
   row           String
   is_seat       Boolean
   cinema_id     Int
   seat_group_id Int?
-  booking       booking[]
-  cinema        cinema      @relation(fields: [cinema_id], references: [id])
-  seat_group    seat_group? @relation(fields: [seat_group_id], references: [id])
+  cinema        cinema        @relation(fields: [cinema_id], references: [id])
+  seat_group    seat_group?   @relation(fields: [seat_group_id], references: [id])
+  booked_seat   booked_seat[]
 }
 
 model seat_group {
@@ -90,29 +90,37 @@ model seat_group {
 }
 
 model streaming {
-  id        Int       @id @default(autoincrement())
-  movie_id  Int?
-  cinema_id Int?
-  date      DateTime
-  booking   booking[]
-  movie     movie?    @relation(fields: [movie_id], references: [id])
-  cinema    cinema?   @relation(fields: [cinema_id], references: [id])
+  id          Int           @id @default(autoincrement())
+  movie_id    Int?
+  cinema_id   Int?
+  date        DateTime
+  booking     booking[]
+  booked_seat booked_seat[]
+  movie       movie?        @relation(fields: [movie_id], references: [id])
+  cinema      cinema?       @relation(fields: [cinema_id], references: [id])
 }
 
 model booking {
-  id              Int       @unique @default(autoincrement())
-  streaming_id    Int
-  seat_primary_id Int
-  customer_id     String
-  status          String
-  booking_token   String
-  payment_id      Int?
-  seat            seat      @relation(fields: [seat_primary_id], references: [primary_id])
-  customer        customer  @relation(fields: [customer_id], references: [user_id])
-  streaming       streaming @relation(fields: [streaming_id], references: [id])
-  payment         payment?  @relation(fields: [payment_id], references: [id])
+  id            Int           @id @default(autoincrement())
+  streaming_id  Int
+  customer_id   String
+  status        String
+  booking_token String
+  payment_id    Int?
+  booked_seat   booked_seat[]
+  customer      customer      @relation(fields: [customer_id], references: [user_id])
+  streaming     streaming     @relation(fields: [streaming_id], references: [id])
+  payment       payment?      @relation(fields: [payment_id], references: [id])
+}
 
-  @@id([streaming_id, seat_primary_id])
+model booked_seat {
+  id              Int        @id @default(autoincrement())
+  seat_primary_id Int
+  booking_id      Int
+  streaming_id    Int
+  seat            seat       @relation(fields: [seat_primary_id], references: [primary_id])
+  booking         booking?   @relation(fields: [booking_id], references: [id])
+  streaming       streaming? @relation(fields: [streaming_id], references: [id])
 }
 
 model payment {

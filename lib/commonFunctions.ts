@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const getDate = (timestamp: Date) => {
   const date = new Date(timestamp);
   const day = date.getUTCDate().toString().padStart(2, "0");
@@ -40,4 +42,15 @@ export const getDate2 = (timeStamp: Date) => {
   const year = date.getFullYear();
 
   return `${day} ${month}, ${year}`;
+};
+
+export const showSuccess = (msg: string) => {
+  toast.success(msg || "Success", { pauseOnHover: false, theme: "dark" });
+};
+
+export const showError = (msg: string) => {
+  toast.error(msg || "Something went wrong", {
+    pauseOnHover: false,
+    theme: "dark",
+  });
 };
