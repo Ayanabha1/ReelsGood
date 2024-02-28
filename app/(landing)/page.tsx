@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 justify-center">
       <h1 className={cn("text-2xl sm:text-4xl md:text-6xl font-semibold")}>
-        ReelRush
+        ReelsGood
       </h1>
       <Link href={"/movies"}>
         <Button>Signin to continue</Button>

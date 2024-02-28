@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingWrapper from "@/components/Loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           >
             {children}
             <ToastContainer limit={5} position="bottom-center" stacked />
+            <LoadingWrapper />
           </body>
         </html>
       </ClerkProvider>

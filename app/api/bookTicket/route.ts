@@ -138,6 +138,7 @@ export async function POST(req: Request) {
                 seat_primary_id: seat,
                 streaming_id: streamingId,
                 booking_id: bookingId,
+                booking_token: bookingToken,
               },
             })
           );

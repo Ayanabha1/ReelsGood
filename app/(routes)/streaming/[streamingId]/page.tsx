@@ -1,7 +1,9 @@
 "use client";
 
+import { loadingInterfaceType } from "@/CommonInterfaces/shared_interfaces";
 import { Button } from "@/components/ui/button";
-import { getDate2, getTime } from "@/lib/commonFunctions";
+import { useLoader } from "@/hooks/loader";
+import { getDate2, getTime, showError } from "@/lib/commonFunctions";
 import { stripe } from "@/lib/stripe";
 import { useUser } from "@clerk/nextjs";
 import { ChevronLeftIcon, MoveLeftIcon } from "lucide-react";
@@ -58,50 +60,57 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
   const [streamingDetails, setStreamingDetails] = useState<any>({});
   const [amount, setAmount] = useState<number>(0);
   const { user } = useUser();
+  const loader: loadingInterfaceType = useLoader();
 
   const getAllData = async () => {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    const __data = await fetch(
-      `${baseUrl}/getStreamingData?streamingId=${streamingId}`,
-      { cache: "no-store" }
-    );
-    const data = await __data.json();
-    const seats = data?.seats;
-    const __groupedSeats = seats?.reduce((acc: any, item: any) => {
-      const { name, price } = item?.seat_group;
-      if (!acc[name]) {
-        acc[name] = { name, price, seats: [] };
-      }
-      const seatData = item;
-      delete seatData?.seat_group;
-      acc[name].seats.push(seatData);
-      return acc;
-    }, {});
-    const groupedSeatsTemp: any = __groupedSeats
-      ? Object?.values(__groupedSeats)
-      : [];
+    loader.setLoading(true);
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const __data = await fetch(
+        `${baseUrl}/getStreamingData?streamingId=${streamingId}`,
+        { cache: "no-store" }
+      );
+      const data = await __data.json();
+      const seats = data?.seats;
+      const __groupedSeats = seats?.reduce((acc: any, item: any) => {
+        const { name, price } = item?.seat_group;
+        if (!acc[name]) {
+          acc[name] = { name, price, seats: [] };
+        }
+        const seatData = item;
+        delete seatData?.seat_group;
+        acc[name].seats.push(seatData);
+        return acc;
+      }, {});
+      const groupedSeatsTemp: any = __groupedSeats
+        ? Object?.values(__groupedSeats)
+        : [];
 
-    const groupedSeats: SeatGroupInterface[] = groupedSeatsTemp?.map(
-      (group: any) => {
-        const groupTemp = group?.seats?.reduce((acc: any, item: any) => {
-          const row = item.row;
-          if (!acc[row]) {
-            acc[row] = { row, seats: [] };
-          }
-          item.selected = false;
-          acc[row].seats.push(item);
-          return acc;
-        }, {});
+      const groupedSeats: SeatGroupInterface[] = groupedSeatsTemp?.map(
+        (group: any) => {
+          const groupTemp = group?.seats?.reduce((acc: any, item: any) => {
+            const row = item.row;
+            if (!acc[row]) {
+              acc[row] = { row, seats: [] };
+            }
+            item.selected = false;
+            acc[row].seats.push(item);
+            return acc;
+          }, {});
 
-        const temp = group;
-        temp.seats = groupTemp ? Object?.values(groupTemp) : [];
-        return temp;
-      }
-    );
-    setSeatGroups(groupedSeats);
-    setMovieDetails(data?.movieDetails);
-    setCinemaDetails(data?.cinemaDetails);
-    setStreamingDetails(data?.streamingDetails);
+          const temp = group;
+          temp.seats = groupTemp ? Object?.values(groupTemp) : [];
+          return temp;
+        }
+      );
+      setSeatGroups(groupedSeats);
+      setMovieDetails(data?.movieDetails);
+      setCinemaDetails(data?.cinemaDetails);
+      setStreamingDetails(data?.streamingDetails);
+    } catch (error: any) {
+      showError(error?.message || error?.response?.data?.message);
+    }
+    loader.setLoading(false);
   };
 
   const selectSeat = (
@@ -126,6 +135,8 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
   };
 
   const reserveSeat = async () => {
+    loader.setLoading(true);
+
     try {
       const customerId = user?.id;
       const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -146,13 +157,17 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
         body: JSON.stringify(body),
       });
       const resData: BookingResponseInterface = await res.json();
+      if (res?.status > 200) {
+        throw new Error(resData?.message);
+      }
       const stripeSessionUrl = resData.stripe_session_url!;
       if (stripeSessionUrl) {
         window.location.href = stripeSessionUrl;
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      showError(error?.message || error?.response?.data?.message);
     }
+    loader.setLoading(false);
   };
 
   useEffect(() => {

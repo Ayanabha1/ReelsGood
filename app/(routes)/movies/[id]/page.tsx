@@ -1,6 +1,8 @@
 "use client";
+import { loadingInterfaceType } from "@/CommonInterfaces/shared_interfaces";
 import { Button } from "@/components/ui/button";
-import { getDate, getDate2, getTime } from "@/lib/commonFunctions";
+import { useLoader } from "@/hooks/loader";
+import { getDate, getDate2, getTime, showError } from "@/lib/commonFunctions";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeftIcon,
@@ -27,29 +29,39 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
   const [streamingTimes, setStreamingTimes] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isMounted, setIsMounted] = useState(false);
+  const loader: loadingInterfaceType = useLoader();
 
   const getCinemas = async () => {
-    const { id } = params;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    loader.setLoading(true);
+    try {
+      const { id } = params;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-    const res = await fetch(`${baseUrl}/getMovie/?id=${id}`, {
-      cache: "no-store",
-    });
-    const data = await res.json();
-    const { movie, cinemas } = data;
+      const res = await fetch(`${baseUrl}/getMovie/?id=${id}`, {
+        cache: "no-store",
+      });
+      const data = await res.json();
+      if (res?.status > 200) {
+        throw new Error(data?.message);
+      }
+      const { movie, cinemas } = data;
 
-    setMovieToShow(movie);
-    setStreamingCinemas(cinemas);
-    let __dates: string[] = [];
-    cinemas?.forEach((cin: any) => {
-      const d = new Date(cin?.date);
-      const date = getDate2(d);
-      __dates.push(date);
-    });
-    __dates = __dates.filter((item, i, date) => date.indexOf(item) === i);
-    __dates = __dates.sort();
-    setStreamingDates(__dates);
-    setSelectedDate(__dates[0]);
+      setMovieToShow(movie);
+      setStreamingCinemas(cinemas);
+      let __dates: string[] = [];
+      cinemas?.forEach((cin: any) => {
+        const d = new Date(cin?.date);
+        const date = getDate2(d);
+        __dates.push(date);
+      });
+      __dates = __dates.filter((item, i, date) => date.indexOf(item) === i);
+      __dates = __dates.sort();
+      setStreamingDates(__dates);
+      setSelectedDate(__dates[0]);
+    } catch (error: any) {
+      showError(error?.message || error?.response?.data?.message);
+    }
+    loader.setLoading(false);
   };
 
   const getCinemasWihDates = (date: string | null) => {
@@ -104,7 +116,7 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
       {movieToShow?.name && (
         <div className="px-4 sm:px-6 py-4 flex flex-col gap-5 overflow-x-hidden">
           {/* Top */}
-          <div className="flex sm:gap-5 max-h-[70vh]">
+          <div className="flex sm:gap-5 max-h-[70vh] min-h-[60vh]">
             {/* Movie Thumbnail */}
             <div className="flex w-[100%] sm:max-w-[30%]">
               <img

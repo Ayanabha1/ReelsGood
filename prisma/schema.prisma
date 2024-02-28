@@ -118,6 +118,7 @@ model booked_seat {
   seat_primary_id Int
   booking_id      Int
   streaming_id    Int
+  booking_token   String
   seat            seat       @relation(fields: [seat_primary_id], references: [primary_id])
   booking         booking?   @relation(fields: [booking_id], references: [id])
   streaming       streaming? @relation(fields: [streaming_id], references: [id])

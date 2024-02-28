@@ -4,6 +4,20 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
+const cancelBooking = async (bookingToken: string) => {
+  const res = await prismaDB.$transaction(async (tx) => {
+    await tx.booked_seat.deleteMany({
+      where: { booking_token: bookingToken },
+    });
+
+    await tx.booking.deleteMany({
+      where: {
+        booking_token: bookingToken,
+      },
+    });
+  });
+};
+
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = headers().get("Stripe-Signature") as string;
@@ -50,11 +64,7 @@ export async function POST(req: Request) {
         });
       } else {
         // payment failed
-        await prismaDB.booking.deleteMany({
-          where: {
-            booking_token: bookingToken,
-          },
-        });
+        await cancelBooking(bookingToken);
       }
     } else if (event.type === "checkout.session.expired") {
       if (!session?.metadata) {
@@ -62,11 +72,7 @@ export async function POST(req: Request) {
       }
       const { customerId, streamingId, bookingToken } = session.metadata;
       console.log("Payment session expired for user: " + customerId);
-      await prismaDB.booking.deleteMany({
-        where: {
-          booking_token: bookingToken,
-        },
-      });
+      await cancelBooking(bookingToken);
     }
 
     return new NextResponse(null, { status: 200 });

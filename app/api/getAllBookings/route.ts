@@ -33,7 +33,7 @@ export async function GET(req: Request) {
     });
 
     if (bookings.length === 0) {
-      throw new Error("Invalid request ... No booking exists with given token");
+      throw new Error("No bookings found");
     }
 
     return NextResponse.json({

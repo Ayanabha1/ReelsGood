@@ -20,7 +20,7 @@ const page = async () => {
         {movies?.map((movie: any, i: any) => (
           <Link href={`movies/${movie.id}`}>
             <div>
-              <Card className="flex flex-col rounded-lg overflow-hidden bg-transparent cursor-pointer">
+              <Card className="flex flex-col border-2 border-[rgba(36,36,36)] rounded-lg overflow-hidden bg-transparent cursor-pointer">
                 <div className="relative">
                   <img
                     loading="lazy"
@@ -36,7 +36,16 @@ const page = async () => {
                   </div>
                 </div>
               </Card>
-              <h1 className="text-xl bg-black mt-2">{movie?.name}</h1>
+              <h1 className="text-xl mt-2">{movie?.name}</h1>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-[rgb(106,106,106)] mt-2">
+                  {movie?.duration}
+                </span>
+                <span className="mt-2 text-[rgb(106,106,106)]">•</span>
+                <span className="text-sm text-[rgb(106,106,106)] mt-2">
+                  {movie?.language}
+                </span>
+              </div>
             </div>
           </Link>
         ))}
