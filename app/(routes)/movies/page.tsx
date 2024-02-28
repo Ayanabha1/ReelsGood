@@ -18,7 +18,7 @@ const page = async () => {
       {/* Movie list */}
       <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
         {movies?.map((movie: any, i: any) => (
-          <Link href={`movies/${movie.id}`}>
+          <Link href={`movies/${movie.id}`} key={movie?.id}>
             <div>
               <Card className="flex flex-col border-2 border-[rgba(36,36,36)] rounded-lg overflow-hidden bg-transparent cursor-pointer">
                 <div className="relative">

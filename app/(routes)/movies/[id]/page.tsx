@@ -273,9 +273,11 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
                           timeObj: { time: string; stream_id: number },
                           j: number
                         ) => (
-                          <Link href={`/streaming/${timeObj?.stream_id}`}>
+                          <Link
+                            key={j}
+                            href={`/streaming/${timeObj?.stream_id}`}
+                          >
                             <Button
-                              key={j}
                               variant={"outline"}
                               className="border bg-[rgb(36,36,36)] hover:bg-[#E7BA01] font-semibold transition-all duration-300"
                             >

@@ -78,12 +78,7 @@ const Ticket = ({ ticketData }: { ticketData: any }) => {
   };
 
   useEffect(() => {
-    if (ticketData) {
-      getTicketInfo();
-    }
-  }, [ticketData]);
-
-  useEffect(() => {
+    getTicketInfo();
     window.addEventListener("mousedown", handleShareContainer);
     return () => {
       window.removeEventListener("mousedown", handleShareContainer);
@@ -171,9 +166,9 @@ const Ticket = ({ ticketData }: { ticketData: any }) => {
               <span className="text-lg">{data?.totalSeats} Ticket(s)</span>
               <div className="flex flex-col gap-2">
                 {data?.seats?.map((group: any, i: number) => (
-                  <div className="flex flex-wrap gap-1">
-                    <span key={i}>{group.group} - </span>
-                    {group?.seats?.map((seat: any) => (
+                  <div className="flex flex-wrap gap-1" key={i}>
+                    <span>{group.group} - </span>
+                    {group?.seats?.map((seat: any, j: number) => (
                       <span key={seat?.id}>{seat?.seat}</span>
                     ))}
                   </div>
