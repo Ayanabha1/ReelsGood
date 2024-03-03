@@ -1,5 +1,6 @@
 "use client";
 import { loadingInterfaceType } from "@/CommonInterfaces/shared_interfaces";
+import Breadcrumps from "@/components/Breadcrumps";
 import Ticket from "@/components/Ticket";
 import { useLoader } from "@/hooks/loader";
 import { showError } from "@/lib/commonFunctions";
@@ -10,6 +11,10 @@ const Page = () => {
   const { userId } = useAuth();
   const [bookings, setBookings] = useState([]);
   const loader: loadingInterfaceType = useLoader();
+  const [paths, setPaths] = useState([
+    { name: "Home", link: "/movies" },
+    { name: "My Bookings", link: "/my_booking" },
+  ]);
 
   const getTickets = async () => {
     loader.setLoading(true);
@@ -41,6 +46,7 @@ const Page = () => {
     <div className="px-6 py-4">
       <title>Bookings - ReelsGood</title>
       <h1 className="text-2xl mb-4 text-center md:text-left">My bookings</h1>
+      <Breadcrumps paths={paths} />
       {bookings?.length > 0 ? (
         <div className="flex justify-center md:justify-normal flex-wrap gap-10">
           {bookings?.map((item, i) => (

@@ -127,13 +127,14 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
       {movieToShow?.name && (
         <div className="px-4 sm:px-6 py-4 flex flex-col gap-5 overflow-x-hidden">
           {/* Top */}
-          <div className="flex sm:gap-5 h-[70vh]">
+          <div className="flex sm:gap-5 h-[60vh]">
             {/* Movie Thumbnail */}
             <div className="relative flex w-[100%] min-w-[250px] sm:max-w-[25%]">
               <Image
                 fill
                 alt={movieToShow?.name}
                 src={movieToShow?.movie_banner}
+                className="object-cover"
               />
             </div>
 
@@ -154,7 +155,12 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
                   ?.slice(0, 3)
                   ?.map((pic: any, i: number) => (
                     <div className="relative h-[33%] w-full" key={i}>
-                      <Image alt="more_image" src={pic?.picture} fill />
+                      <Image
+                        alt="more_image"
+                        src={pic?.picture}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                   ))}
               </div>
@@ -226,7 +232,7 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
 
             {/* Streaming details */}
 
-            <div className="flex md:w-[70%] flex-col gap-4">
+            <div className="flex md:w-[75%] flex-col gap-4">
               {/* Streaming Dates */}
               <div className="flex gap-4 flex-col xsm:flex-row">
                 <div className="bg-[rgb(36,36,36)] flex justify-center items-center rounded-lg py-1 lg:py-2 px-4 lg:px-6 shadow-xl">
