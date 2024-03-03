@@ -43,6 +43,7 @@ interface MovieInterface {
   id: number;
   name: string;
   description: string;
+  movie_banner: string;
   movie_picture: MoviePictureInterface[];
   rating: number;
 }
@@ -163,7 +164,7 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
         streamingId: streamingDetails.id,
         customerId: customerId,
         movieName: movieDetails?.name,
-        moviePicture: movieDetails?.movie_picture[0]?.picture,
+        moviePicture: movieDetails?.movie_banner,
         cinemaName: cinemaDetails?.name,
         date: getDate2(streamingDetails?.date),
         time: getTime(streamingDetails?.date),

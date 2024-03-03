@@ -92,10 +92,7 @@ const Ticket = ({ ticketData }: { ticketData: any }) => {
           <div className="relative flex gap-4 p-3">
             <div className="relative h-[170px] w-[120px] rounded-lg overflow-hidden">
               <Image
-                src={
-                  data?.bookingDetails?.streaming?.movie?.movie_picture[0]
-                    ?.picture
-                }
+                src={data?.bookingDetails?.streaming?.movie?.movie_banner}
                 alt="Image"
                 className="rounded-lg"
                 fill
