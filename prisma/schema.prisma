@@ -31,6 +31,7 @@ model movie {
   language      String
   pg_rating     String
   trailer_url   String?
+  movie_banner  String?
   created_at    DateTime        @default(now())
   updated_at    DateTime        @default(now())
   movie_picture movie_picture[]

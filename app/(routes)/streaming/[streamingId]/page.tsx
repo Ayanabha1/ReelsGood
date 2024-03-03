@@ -1,6 +1,7 @@
 "use client";
 
 import { loadingInterfaceType } from "@/CommonInterfaces/shared_interfaces";
+import Breadcrumps from "@/components/Breadcrumps";
 import { Button } from "@/components/ui/button";
 import { useLoader } from "@/hooks/loader";
 import { getDate2, getTime, showError } from "@/lib/commonFunctions";
@@ -9,6 +10,7 @@ import { useUser } from "@clerk/nextjs";
 import { ChevronLeftIcon, MoveLeftIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import path from "path";
 import { useEffect, useState } from "react";
 
 interface SeatInterface {
@@ -61,6 +63,10 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
   const [amount, setAmount] = useState<number>(0);
   const { user } = useUser();
   const loader: loadingInterfaceType = useLoader();
+  const [paths, setPaths] = useState([
+    { name: "Home", link: "/" },
+    { name: "Movies", link: "/movies" },
+  ]);
 
   const getAllData = async () => {
     loader.setLoading(true);
@@ -107,6 +113,17 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
       setMovieDetails(data?.movieDetails);
       setCinemaDetails(data?.cinemaDetails);
       setStreamingDetails(data?.streamingDetails);
+      setPaths((prev) => [
+        ...prev,
+        {
+          name: data?.movieDetails?.name,
+          link: `/movies/${data?.movieDetails?.id}`,
+        },
+        {
+          name: "Book Tickets",
+          link: `/streaming/${streamingId}`,
+        },
+      ]);
     } catch (error: any) {
       showError(error?.message || error?.response?.data?.message);
     }
@@ -180,11 +197,9 @@ const Page = ({ params }: { params: { streamingId: number } }) => {
         selectedSeatIds.length && "pb-24"
       } text-sm sm:text-lg`}
     >
+      <Breadcrumps paths={paths} />
       {/* Movie and cinema details */}
       <div className="flex gap-2 items-start sm:items-center ">
-        <Link href={`/movies/${movieDetails?.id}`}>
-          <MoveLeftIcon className="h-8 w-8" />
-        </Link>
         {/* movie details */}
         {cinemaDetails && movieDetails && (
           <div className="flex flex-col">

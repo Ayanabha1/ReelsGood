@@ -1,5 +1,6 @@
 "use client";
 import { loadingInterfaceType } from "@/CommonInterfaces/shared_interfaces";
+import Breadcrumps from "@/components/Breadcrumps";
 import { Button } from "@/components/ui/button";
 import { useLoader } from "@/hooks/loader";
 import { getDate, getDate2, getTime, showError } from "@/lib/commonFunctions";
@@ -12,6 +13,7 @@ import {
   Smartphone,
   Star,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
@@ -30,6 +32,10 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isMounted, setIsMounted] = useState(false);
   const loader: loadingInterfaceType = useLoader();
+  const [paths, setPaths] = useState([
+    { name: "Home", link: "/" },
+    { name: "Movies", link: "/movies" },
+  ]);
 
   const getCinemas = async () => {
     loader.setLoading(true);
@@ -45,7 +51,6 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
         throw new Error(data?.message);
       }
       const { movie, cinemas } = data;
-
       setMovieToShow(movie);
       setStreamingCinemas(cinemas);
       let __dates: string[] = [];
@@ -99,6 +104,16 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
     getCinemas();
   }, []);
 
+  useEffect(() => {
+    if (movieToShow?.name) {
+      console.log("first");
+      setPaths((prev) => [
+        ...prev,
+        { name: movieToShow?.name, link: `/movies/${movieToShow?.id}` },
+      ]);
+    }
+  }, [movieToShow]);
+
   if (!isMounted) {
     return null;
   }
@@ -106,35 +121,42 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
   return (
     <div>
       <div className="px-4 sm:px-6 pt-4 flex gap-2 justify-center sm:justify-normal relative">
-        <Link href={`/movies`} className="absolute left-4 sm:left-6 top-4">
-          <MoveLeftIcon />
-        </Link>
-        <span className="sm:ml-8 text-lg sm:text-xl">
-          {movieToShow?.name || "Browse other movies"}
-        </span>
+        <div className="mb-2"></div>
+        <Breadcrumps paths={paths} />
       </div>
       {movieToShow?.name && (
         <div className="px-4 sm:px-6 py-4 flex flex-col gap-5 overflow-x-hidden">
           {/* Top */}
-          <div className="flex sm:gap-5 max-h-[70vh] min-h-[60vh]">
+          <div className="flex sm:gap-5 h-[70vh]">
             {/* Movie Thumbnail */}
-            <div className="flex w-[100%] sm:max-w-[30%]">
-              <img
-                loading="lazy"
-                src={movieToShow?.movie_picture[0]?.picture}
-                className="w-[100%] object-cover"
+            <div className="relative flex w-[100%] min-w-[250px] sm:max-w-[25%]">
+              <Image
+                fill
+                alt={movieToShow?.name}
+                src={movieToShow?.movie_banner}
               />
             </div>
 
             {/* Movie trailer */}
-            <div className="flex w-0 sm:w-[70%]">
-              <div className="flex w-full justify-center bg-[rgb(26,26,26)]">
+            <div className="flex w-0 sm:w-[75%] gap-5">
+              <div className="flex flex-[0.75] flex-grow w-full justify-center bg-[rgb(26,26,26)]">
                 <ReactPlayer
                   url={movieToShow?.trailer_url}
                   controls={true}
                   width="100%"
                   height="100%"
                 />
+              </div>
+
+              {/* More photos */}
+              <div className="md:flex-[0.25] w-0 md:min-w-[200px] flex flex-col overflow-y-scroll gap-1">
+                {movieToShow?.movie_picture
+                  ?.slice(0, 3)
+                  ?.map((pic: any, i: number) => (
+                    <div className="relative h-[33%] w-full">
+                      <Image alt="more_image" src={pic?.picture} fill />
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -144,7 +166,7 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
           <div className="flex flex-col md:flex-row gap-5 text-sm lg:text-md">
             {/* Movie details */}
 
-            <div className="md:w-[30%] ">
+            <div className="md:w-[25%] ">
               {/* Movie image and some info */}
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-2">

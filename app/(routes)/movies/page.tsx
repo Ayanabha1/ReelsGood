@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const page = async () => {
@@ -21,12 +22,12 @@ const page = async () => {
           <Link href={`movies/${movie.id}`} key={movie?.id}>
             <div>
               <Card className="flex flex-col border-2 border-[rgba(36,36,36)] rounded-lg overflow-hidden bg-transparent cursor-pointer">
-                <div className="relative">
-                  <img
-                    loading="lazy"
-                    className="h-[400px] w-[250px] object-cover hover:scale-110 transition-all duration-200"
-                    src={movie?.movie_picture[0]?.picture}
+                <div className="relative h-[400px] w-[250px] object-cover ">
+                  <Image
+                    fill
+                    src={movie?.movie_banner}
                     alt={movie.name}
+                    className="hover:scale-110 transition-all duration-200"
                   />
                   <div className="bg-[rgb(0,0,0)] absolute bottom-0 left-0 flex gap-2 w-full p-2">
                     <Star className="h-6 w-6" color="#FFD447" fill="#FFD447" />
