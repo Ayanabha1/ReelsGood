@@ -13,6 +13,7 @@ const Breadcrumps = ({ paths }: { paths: PathInterface[] }) => {
       {paths?.map((path, i) => (
         <>
           <Link
+            key={i}
             href={path?.link}
             className={`${
               i === paths.length - 1

@@ -153,7 +153,7 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
                 {movieToShow?.movie_picture
                   ?.slice(0, 3)
                   ?.map((pic: any, i: number) => (
-                    <div className="relative h-[33%] w-full">
+                    <div className="relative h-[33%] w-full" key={i}>
                       <Image alt="more_image" src={pic?.picture} fill />
                     </div>
                   ))}
