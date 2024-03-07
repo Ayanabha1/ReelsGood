@@ -134,13 +134,13 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
                 fill
                 alt={movieToShow?.name}
                 src={movieToShow?.movie_banner}
-                className="object-cover"
+                className="object-cover border border-[rgba(26,26,26)]"
               />
             </div>
 
             {/* Movie trailer */}
             <div className="flex w-0 sm:w-[75%] gap-5">
-              <div className="flex flex-[0.75] flex-grow w-full justify-center bg-[rgb(26,26,26)]">
+              <div className="flex flex-[0.75] flex-grow w-full justify-center bg-[rgb(26,26,26)] border border-[rgba(26,26,26)]">
                 <ReactPlayer
                   url={movieToShow?.trailer_url}
                   controls={true}
@@ -159,7 +159,7 @@ const Page = ({ params }: { params: { id: ReactNode } }) => {
                         alt="more_image"
                         src={pic?.picture}
                         fill
-                        className="object-cover"
+                        className="border border-[rgba(26,26,26)]"
                       />
                     </div>
                   ))}
