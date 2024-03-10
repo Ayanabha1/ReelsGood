@@ -64,16 +64,19 @@ model movie_cast {
 }
 
 model actor {
-    id         Int          @id @default(autoincrement())
-    name       String
-    picture    String
-    movie_cast movie_cast[]
+    id                Int          @id @default(autoincrement())
+    name              String
+    picture           String
+    popularity_rating Float        @default(1)
+    movie_cast        movie_cast[]
 }
 
 model cinema {
     id         Int         @id @default(autoincrement())
     name       String
     rating     Float       @default(1)
+    city       String
+    state      String
     created_at DateTime    @default(now())
     updated_at DateTime    @default(now())
     seat       seat[]

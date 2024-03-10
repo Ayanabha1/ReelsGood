@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     setPath(pathname);
-  }, []);
+  }, [pathname]);
 
   return (
     <aside className="flex flex-col p-6 py-6">

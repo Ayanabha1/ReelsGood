@@ -30,9 +30,6 @@ const Dashboard = async () => {
     },
   ];
 
-  // const payments = await getPayments();
-  // console.log(payments);
-
   return (
     <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
       {/* Left part */}
@@ -111,6 +108,16 @@ const Dashboard = async () => {
               <div className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4" />
                 Invoice Analysis
+              </div>
+              <ChevronRightIcon className="h-4 w-4" />{" "}
+            </Button>
+            <Button
+              className="flex items-center justify-between shadow w-full"
+              variant="outline"
+            >
+              <div className="flex items-center gap-2">
+                <BookOpenTextIcon className="h-4 w-4" />
+                Bookings
               </div>
               <ChevronRightIcon className="h-4 w-4" />{" "}
             </Button>

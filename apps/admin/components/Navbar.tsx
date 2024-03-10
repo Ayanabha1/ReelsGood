@@ -1,8 +1,13 @@
+"use client";
+import { useClerk } from "@clerk/nextjs";
 import { BellRingIcon } from "lucide-react";
+import { useEffect } from "react";
+import CustomUserButton from "./CustomUserButton";
 
 const Navbar = () => {
-  const greet = () => {
-    const name = "Ayanabha";
+  const { user } = useClerk();
+
+  const greet = (name: string) => {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
@@ -31,7 +36,7 @@ const Navbar = () => {
 
         {/* Greet */}
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold">{greet()}</h1>
+          <h1 className="text-2xl font-semibold">{greet(user?.firstName!)}</h1>
           <span className="text-sm text-muted-foreground">
             Have an in-depth look at all the metrics within your dashboard
           </span>
@@ -41,8 +46,7 @@ const Navbar = () => {
 
       <div className="flex gap-3 items-center ">
         <BellRingIcon className="text-[rgb(180,180,180)] mr-4" />
-        <div className="h-8 w-8 bg-[rgb(242,243,245)] rounded-full"></div>
-        <span className="text-lg">Ayanabha Misra</span>
+        <CustomUserButton />
       </div>
     </div>
   );
