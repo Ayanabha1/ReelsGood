@@ -1,3 +1,5 @@
+import { BellRingIcon } from "lucide-react";
+
 const Navbar = () => {
   const greet = () => {
     const name = "Ayanabha";
@@ -18,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="p-6 flex justify-between border-b">
+    <div className="p-6 flex justify-between">
       {/* Greeting */}
       <div className="flex items-center gap-5">
         {/* User Image */}
@@ -38,6 +40,7 @@ const Navbar = () => {
       {/* Controls */}
 
       <div className="flex gap-3 items-center ">
+        <BellRingIcon className="text-[rgb(180,180,180)] mr-4" />
         <div className="h-8 w-8 bg-[rgb(242,243,245)] rounded-full"></div>
         <span className="text-lg">Ayanabha Misra</span>
       </div>

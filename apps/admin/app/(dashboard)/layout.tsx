@@ -12,7 +12,7 @@ const layout = ({ children }: { children: ReactNode }) => {
         <nav>
           <Navbar />
         </nav>
-        <section className="h-full">{children}</section>
+        <section className="h-full ">{children}</section>
       </div>
     </main>
   );

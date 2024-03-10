@@ -20,7 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(poppins.className, "h-[100vh] w-[100vw]")}>
+      <body
+        className={cn(
+          poppins.className,
+          "h-[100vh] w-[100vw] overflow-hidden pb-20"
+        )}
+      >
         {children}
       </body>
     </html>
