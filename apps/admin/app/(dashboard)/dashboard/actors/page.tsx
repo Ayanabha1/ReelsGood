@@ -1,6 +1,7 @@
 "use client";
 import AddItem from "@/components/AddItem";
 import CustomPagination from "@/components/CustomPagination";
+import SearchBar from "@/components/CustomSearch";
 import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
@@ -81,7 +82,10 @@ const Actors = () => {
       </section>
 
       <section className="w-full flex flex-col gap-10">
-        <h1 className="text-2xl font-semibold">View All Actors</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">View All Actors</h1>
+          <SearchBar apiRoute="getActorByName" placeholder="Enter a name" />
+        </div>
         <CustomTable
           fields={tableFields}
           data={actors}

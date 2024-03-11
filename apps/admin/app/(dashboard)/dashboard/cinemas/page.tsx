@@ -1,5 +1,6 @@
 "use client";
 import CustomPagination from "@/components/CustomPagination";
+import SearchBar from "@/components/CustomSearch";
 import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
@@ -63,7 +64,10 @@ const Cinemas = () => {
   return (
     <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
       <section className="w-full flex flex-col gap-10">
-        <h1 className="text-2xl font-semibold">View All Cinemas</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">View All Cinemas</h1>
+          <SearchBar apiRoute="getCinemaByName" placeholder="Enter a name" />
+        </div>
         <CustomTable
           fields={tableFields}
           data={cinemas}
