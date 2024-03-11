@@ -3,6 +3,7 @@ import { useClerk } from "@clerk/nextjs";
 import { BellRingIcon } from "lucide-react";
 import { useEffect } from "react";
 import CustomUserButton from "./CustomUserButton";
+import Image from "next/image";
 
 const Navbar = () => {
   const { user } = useClerk();
@@ -29,9 +30,11 @@ const Navbar = () => {
       {/* Greeting */}
       <div className="flex items-center gap-5">
         {/* User Image */}
-        <div className="border p-1 rounded-full">
+        <div className="border-2 border-[rgba(0,0,0,0.15)] p-1 rounded-full">
           {/* img */}
-          <div className="h-12 w-12 bg-[rgb(242,243,245)] rounded-full"></div>
+          <div className="h-12 w-12 relative rounded-full overflow-hidden">
+            <Image src={user?.imageUrl!} alt="user" fill />
+          </div>
         </div>
 
         {/* Greet */}

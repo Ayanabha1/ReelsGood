@@ -1,4 +1,5 @@
 "use client";
+import AddItem from "@/components/AddItem";
 import CustomPagination from "@/components/CustomPagination";
 import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
@@ -74,9 +75,13 @@ const Actors = () => {
   }, []);
 
   return (
-    <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
+    <div className="p-6 flex flex-col gap-10 h-[85vh] overflow-scroll">
+      <section>
+        <AddItem />
+      </section>
+
       <section className="w-full flex flex-col gap-10">
-        <h1 className="text-2xl font-semibold">View All actors</h1>
+        <h1 className="text-2xl font-semibold">View All Actors</h1>
         <CustomTable
           fields={tableFields}
           data={actors}
