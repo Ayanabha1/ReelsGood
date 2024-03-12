@@ -78,7 +78,7 @@ const Actors = () => {
   return (
     <div className="p-6 flex flex-col gap-10 h-[85vh] overflow-scroll">
       <section>
-        <AddItem />
+        <AddItem link="/dashboard/actors/add-actor" text="Add Actor(s)" />
       </section>
 
       <section className="w-full flex flex-col gap-10">

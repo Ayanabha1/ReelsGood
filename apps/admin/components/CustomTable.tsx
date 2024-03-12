@@ -36,7 +36,11 @@ const CustomTable = ({
           <TableRow>
             {fields?.map((item, i) => (
               <TableHead
-                className={cn("pl-0", i === 0 ? "text-left" : "text-right")}
+                className={cn(
+                  "pl-0 max-w-[200px]",
+                  i === 0 ? " text-left" : "text-right",
+                  i !== fields?.length - 1 && "border-r"
+                )}
                 key={i}
               >
                 {item}
@@ -48,7 +52,13 @@ const CustomTable = ({
           {data?.map((item, i) => (
             <TableRow key={i}>
               {item?.map((field, j) => (
-                <TableCell key={`${i}+${j}`} className={cn("pl-0 text-[1rem]")}>
+                <TableCell
+                  key={`${i}+${j}`}
+                  className={cn(
+                    "pl-0 max-w-[200px] overflow-auto text-[1rem] ",
+                    j !== item?.length - 1 && "border-r"
+                  )}
+                >
                   <div
                     className={cn(
                       "flex",
@@ -65,7 +75,12 @@ const CustomTable = ({
                         />
                       </div>
                     ) : null}
-                    <pre className={cn(poppins.className, "pl-0 text-[1rem]")}>
+                    <pre
+                      className={cn(
+                        poppins.className,
+                        "pl-0 text-[1rem] break-words overflow-scroll"
+                      )}
+                    >
                       {field.value}
                     </pre>
                   </div>

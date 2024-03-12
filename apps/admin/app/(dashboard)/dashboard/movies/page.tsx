@@ -1,4 +1,5 @@
 "use client";
+import AddItem from "@/components/AddItem";
 import CustomPagination from "@/components/CustomPagination";
 import SearchBar from "@/components/CustomSearch";
 import CustomTable from "@/components/CustomTable";
@@ -74,6 +75,9 @@ const Users = () => {
   return (
     <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
       <section className="w-full flex flex-col gap-10">
+        <section>
+          <AddItem link="/dashboard/movies/add-movie" text="Add Movie(s)" />
+        </section>
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">View All Movies</h1>
           <SearchBar apiRoute="getMovieByName" placeholder="Enter a name" />

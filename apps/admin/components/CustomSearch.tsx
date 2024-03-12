@@ -17,9 +17,11 @@ const useDebounce = (effect: any, dependencies: any, delay: any) => {
 const SearchBar = ({
   placeholder = "Please search for something",
   apiRoute,
+  fields = ["name"],
 }: {
   placeholder: string;
   apiRoute: string;
+  fields?: string[];
 }) => {
   const [input, setInput] = useState<string>("");
   const [result, setResult] = useState<any>([]);
@@ -34,7 +36,9 @@ const SearchBar = ({
       return;
     }
     const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-    const res = await fetch(baseURL + `/api/${apiRoute}?data=${str}`);
+    const res = await fetch(baseURL + `/api/${apiRoute}?data=${str}`, {
+      cache: "no-store",
+    });
     const data = await res.json();
     setResult(data?.data);
   };
@@ -71,12 +75,14 @@ const SearchBar = ({
           {result?.map((item: any, i: number) => (
             <div
               className={cn(
-                "flex p-4 cursor-pointer hover:bg-[rgba(0,0,0,0.05)]",
+                "flex p-4 cursor-pointer hover:bg-[rgba(0,0,0,0.05)] justify-between flex-wrap",
                 i !== result?.length - 1 && "border-b"
               )}
               key={i}
             >
-              <span>{item?.name}</span>
+              {fields?.map((field, j) => (
+                <span className="break-words">{item[field]}</span>
+              ))}
             </div>
           ))}
         </div>

@@ -4,12 +4,11 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const payload = await req.json();
-    const data = {
-      name: payload?.name?.trim(),
-      picture: payload?.picture?.trim(),
-      popularity_rating: payload?.popularity_rating || 1,
-    };
-    await prismaDB.actor.create({ data: data });
+
+    await prismaDB.actor.createMany({ data: payload }).catch((err) => {
+      throw new Error();
+    });
+    console.log(payload);
     return NextResponse.json({
       message: "Actor added successfully",
     });

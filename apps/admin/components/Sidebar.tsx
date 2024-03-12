@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   const navOpClickHandler = (option: SidebarOpsInterface) => {
     if (option.link) {
-      router.push(option.link);
+      // router.push(option.link);
     } else if (option.action !== undefined) {
       option.action();
     }
@@ -50,19 +50,38 @@ const Sidebar = () => {
         <div className="flex flex-col mt-3">
           <span className="text-muted-foreground text-sm mb-2">Main Menu</span>
           {__sidebarOps.map((op, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                navOpClickHandler(op);
-              }}
-              className={cn(
-                "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
-                op.link === path && "bg-secondary text-white"
+            <>
+              {op?.link ? (
+                <Link href={op?.link} key={i}>
+                  <div
+                    onClick={() => {
+                      navOpClickHandler(op);
+                    }}
+                    className={cn(
+                      "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
+                      op.link === path && "bg-secondary text-white"
+                    )}
+                  >
+                    <op.icon className="h-5 w-5" />
+                    <span>{op.name}</span>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  key={i}
+                  onClick={() => {
+                    navOpClickHandler(op);
+                  }}
+                  className={cn(
+                    "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300",
+                    op.link === path && "text-black font-bold"
+                  )}
+                >
+                  <op.icon className="h-5 w-5" />
+                  <span>{op.name}</span>
+                </div>
               )}
-            >
-              <op.icon className={cn("h-5 w-5")} />
-              <span>{op.name}</span>
-            </div>
+            </>
           ))}
         </div>
 
@@ -70,19 +89,38 @@ const Sidebar = () => {
         <div className="flex flex-col mt-5">
           <span className="text-muted-foreground text-sm mb-2">Controls</span>
           {__sidebarControls.map((op, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                navOpClickHandler(op);
-              }}
-              className={cn(
-                "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300",
-                op.link === path && "text-black font-bold"
+            <>
+              {op?.link ? (
+                <Link href={op?.link} key={i}>
+                  <div
+                    onClick={() => {
+                      navOpClickHandler(op);
+                    }}
+                    className={cn(
+                      "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
+                      op.link === path && "bg-secondary text-white"
+                    )}
+                  >
+                    <op.icon className="h-5 w-5" />
+                    <span>{op.name}</span>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  key={i}
+                  onClick={() => {
+                    navOpClickHandler(op);
+                  }}
+                  className={cn(
+                    "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
+                    op.link === path && "text-black font-bold"
+                  )}
+                >
+                  <op.icon className="h-5 w-5" />
+                  <span>{op.name}</span>
+                </div>
               )}
-            >
-              <op.icon className="h-5 w-5" />
-              <span>{op.name}</span>
-            </div>
+            </>
           ))}
         </div>
       </div>

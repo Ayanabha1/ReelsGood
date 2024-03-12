@@ -5,6 +5,7 @@ import { getDate2 } from "@/lib/commonFunctions";
 import { PagesInterface, TableCellInterface } from "@/lib/commonInterfaces";
 import CustomPagination from "./CustomPagination";
 import { items_per_page } from "@/lib/constants";
+import SearchBar from "./CustomSearch";
 
 const Transactions = () => {
   const [currPage, setCurrPage] = useState<number>(1);
@@ -61,7 +62,14 @@ const Transactions = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold">Transaction History</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Transaction History</h1>
+        <SearchBar
+          apiRoute="getPaymentsHistory"
+          placeholder="Enter name or transaction id"
+          fields={["name", "amount"]}
+        />
+      </div>
       <CustomTable
         fields={tableFields}
         data={paymentData}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,7 +31,12 @@ export default function RootLayout({
           )}
         >
           {children}
-          <ToastContainer limit={5} position="bottom-center" stacked />
+          <ToastContainer
+            limit={5}
+            position="bottom-center"
+            stacked
+            className="text-center"
+          />
         </body>
       </html>
     </ClerkProvider>

@@ -2,21 +2,18 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-const AddItem = () => {
+const AddItem = ({ link, text }: { link: string; text: string }) => {
   const router = useRouter();
   return (
     <div className="flex items-center gap-5">
       <h1 className="text-xl">Add an actor</h1>
-      <Button
-        variant="outline"
-        className="shadow-md"
-        onClick={() => {
-          router.push("actors/add-actor");
-        }}
-      >
-        Add Actor
-      </Button>
+      <Link href={link}>
+        <Button variant="outline" className="shadow-md text-[16px]">
+          {text}
+        </Button>
+      </Link>
     </div>
   );
 };
