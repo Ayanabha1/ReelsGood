@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     } else {
       movies = await prismaDB.movie.findMany({});
     }
-    const total = await prismaDB.cinema.count();
+    const total = await prismaDB.movie.count();
     return NextResponse.json({
       movies: movies,
       total: total,

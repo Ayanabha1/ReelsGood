@@ -8,7 +8,7 @@ const AddItem = ({ link, text }: { link: string; text: string }) => {
   const router = useRouter();
   return (
     <div className="flex items-center gap-5">
-      <h1 className="text-xl">Add an actor</h1>
+      <h1 className="text-xl">{text}</h1>
       <Link href={link}>
         <Button variant="outline" className="shadow-md text-[16px]">
           {text}

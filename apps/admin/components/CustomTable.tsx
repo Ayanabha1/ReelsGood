@@ -23,11 +23,23 @@ const CustomTable = ({
   fields,
   data,
   caption,
+  clickCb,
 }: {
   fields: string[];
   data: TableCellInterface[][];
   caption: string;
+  clickCb?: (item: any) => void;
 }) => {
+  const clickHandler = (item: any) => {
+    if (clickCb) {
+      // Changing data format
+      const data = item?.reduce((acc: any, d: TableCellInterface) => {
+        acc[d.field!] = d.value;
+        return acc;
+      }, {});
+      clickCb(data);
+    }
+  };
   return (
     <div className="border p-2 px-4 rounded-lg shadow-md">
       <Table>
@@ -37,8 +49,7 @@ const CustomTable = ({
             {fields?.map((item, i) => (
               <TableHead
                 className={cn(
-                  "pl-0 max-w-[200px]",
-                  i === 0 ? " text-left" : "text-right",
+                  " max-w-[200px]",
                   i !== fields?.length - 1 && "border-r"
                 )}
                 key={i}
@@ -50,21 +61,21 @@ const CustomTable = ({
         </TableHeader>
         <TableBody>
           {data?.map((item, i) => (
-            <TableRow key={i}>
+            <TableRow
+              key={i}
+              onClick={() => {
+                clickHandler(item);
+              }}
+            >
               {item?.map((field, j) => (
                 <TableCell
                   key={`${i}+${j}`}
                   className={cn(
-                    "pl-0 max-w-[200px] overflow-auto text-[1rem] ",
+                    " max-w-[200px] overflow-auto text-[1rem] cursor-pointer",
                     j !== item?.length - 1 && "border-r"
                   )}
                 >
-                  <div
-                    className={cn(
-                      "flex",
-                      j === 0 ? "justify-start" : "justify-end"
-                    )}
-                  >
+                  <div className={cn("flex")}>
                     {field.image ? (
                       <div className="relative h-40 w-40 ">
                         <Image

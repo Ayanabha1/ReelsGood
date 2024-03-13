@@ -7,6 +7,10 @@ import {
   Sparkles,
   SettingsIcon,
   LogOut,
+  Monitor,
+  StarIcon,
+  Sparkle,
+  Aperture,
 } from "lucide-react";
 
 export const sidebarOps = [
@@ -29,6 +33,21 @@ export const sidebarOps = [
     name: "Movies",
     link: "/dashboard/movies",
     icon: Film,
+  },
+  {
+    name: "Movies Photos",
+    link: "/dashboard/movies/movie-picture",
+    icon: Aperture,
+  },
+  {
+    name: "Movie Casting",
+    link: "/dashboard/movies/movie-casting",
+    icon: Sparkle,
+  },
+  {
+    name: "Streaming",
+    link: "/dashboard/movies/movie-streaming",
+    icon: Monitor,
   },
   {
     name: "Actors",

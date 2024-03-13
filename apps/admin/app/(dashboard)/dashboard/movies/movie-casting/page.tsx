@@ -6,13 +6,16 @@ import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
 import { items_per_page } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Users = () => {
+const MovieCasting = () => {
+  const router = useRouter();
   const [rows, setRows] = useState(1);
   const [movies, setMovies] = useState<TableCellInterface[][]>([]);
   const [currPage, setCurrPage] = useState<number>(1);
   const tableFields = [
+    "Id",
     "Name",
     "Rating",
     "PG Rating",
@@ -37,7 +40,12 @@ const Users = () => {
       }
     );
     const data = await usersRes.json();
+    console.log(data);
     const __users: TableCellInterface[][] = data?.movies?.map((item: any) => [
+      {
+        field: "id",
+        value: item.id,
+      },
       {
         field: "name",
         value: item.name,
@@ -68,6 +76,12 @@ const Users = () => {
     setMovies(__users);
   };
 
+  const selectMovie = (item: any) => {
+    if (item?.id) {
+      router.push(`/dashboard/movies/movie-casting/${item?.id}`);
+    }
+  };
+
   useEffect(() => {
     getMovies(0, items_per_page);
   }, []);
@@ -75,17 +89,19 @@ const Users = () => {
   return (
     <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
       <section className="w-full flex flex-col gap-10">
-        <section>
-          <AddItem link="/dashboard/movies/add-movie" text="Add Movie(s)" />
-        </section>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">View All Movies</h1>
-          <SearchBar apiRoute="getMovieByName" placeholder="Enter a name" />
+          <h1 className="text-2xl font-semibold">Casting | Select a movie</h1>
+          <SearchBar
+            apiRoute="getMovieByName"
+            placeholder="Enter a name"
+            clickCb={selectMovie}
+          />
         </div>
         <CustomTable
           fields={tableFields}
           data={movies}
           caption="List of all the movies"
+          clickCb={selectMovie}
         />
         <CustomPagination
           currPage={currPage}
@@ -97,4 +113,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default MovieCasting;

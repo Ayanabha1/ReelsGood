@@ -2,6 +2,7 @@ import { LucideIcon } from "lucide-react";
 
 export interface TableCellInterface {
   value: string;
+  field?: string;
   image?: string;
   icon?: LucideIcon;
   color?: string;

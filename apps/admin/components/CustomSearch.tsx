@@ -18,10 +18,14 @@ const SearchBar = ({
   placeholder = "Please search for something",
   apiRoute,
   fields = ["name"],
+  clickCb,
+  className,
 }: {
   placeholder: string;
   apiRoute: string;
   fields?: string[];
+  clickCb?: (item: any) => void;
+  className?: string;
 }) => {
   const [input, setInput] = useState<string>("");
   const [result, setResult] = useState<any>([]);
@@ -43,6 +47,14 @@ const SearchBar = ({
     setResult(data?.data);
   };
 
+  const clickHandler = (item: any) => {
+    setResult([]);
+    setInput("");
+    if (clickCb) {
+      clickCb(item);
+    }
+  };
+
   useDebounce(
     () => {
       searchItem(input);
@@ -52,11 +64,12 @@ const SearchBar = ({
   );
 
   return (
-    <div className="relative w-[400px] rounded-md shadow">
+    <div className={cn("relative w-[400px] rounded-md shadow", className)}>
       <SearchIcon className="absolute top-[50%] translate-y-[-50%] left-2 h-5 w-5 text-[rgba(0,0,0,0.35)]" />
       <Input
         placeholder={`${placeholder} (min 2 letters)`}
         className="pl-9"
+        value={input}
         onChange={(e) => {
           handleInputChange(e.target.value);
         }}
@@ -79,9 +92,14 @@ const SearchBar = ({
                 i !== result?.length - 1 && "border-b"
               )}
               key={i}
+              onClick={() => {
+                clickHandler(item);
+              }}
             >
               {fields?.map((field, j) => (
-                <span className="break-words">{item[field]}</span>
+                <span className="break-words" key={j}>
+                  {item[field]}
+                </span>
               ))}
             </div>
           ))}
