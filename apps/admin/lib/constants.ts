@@ -16,7 +16,7 @@ import {
 export const sidebarOps = [
   {
     name: "Dashboard",
-    link: "/dashboard",
+    link: "/dashboard/main",
     icon: LayoutDashboard,
   },
   {
@@ -41,12 +41,12 @@ export const sidebarOps = [
   },
   {
     name: "Movie Casting",
-    link: "/dashboard/movies/movie-casting",
+    link: "/dashboard/movie-casting",
     icon: Sparkle,
   },
   {
     name: "Streaming",
-    link: "/dashboard/movies/movie-streaming",
+    link: "/dashboard/streaming",
     icon: Monitor,
   },
   {

@@ -32,3 +32,15 @@ export const showError = (msg: string) => {
     theme: "dark",
   });
 };
+
+export const getTime = (timeStamp: Date) => {
+  const date = new Date(timeStamp);
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const formattedHours = hours < 10 ? "0" + hours : hours;
+  const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+  return formattedHours + ":" + formattedMinutes + " " + ampm;
+};

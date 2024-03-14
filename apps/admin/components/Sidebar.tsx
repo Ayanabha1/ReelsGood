@@ -50,16 +50,16 @@ const Sidebar = () => {
         <div className="flex flex-col mt-3">
           <span className="text-muted-foreground text-sm mb-2">Main Menu</span>
           {__sidebarOps.map((op, i) => (
-            <>
+            <div key={i}>
               {op?.link ? (
-                <Link href={op?.link} key={i}>
+                <Link href={op?.link}>
                   <div
                     onClick={() => {
                       navOpClickHandler(op);
                     }}
                     className={cn(
                       "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
-                      op.link === path && "bg-secondary text-white"
+                      path.includes(op?.link) && "bg-secondary text-white"
                     )}
                   >
                     <op.icon className="h-5 w-5" />
@@ -68,7 +68,6 @@ const Sidebar = () => {
                 </Link>
               ) : (
                 <div
-                  key={i}
                   onClick={() => {
                     navOpClickHandler(op);
                   }}
@@ -81,7 +80,7 @@ const Sidebar = () => {
                   <span>{op.name}</span>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
 
@@ -89,9 +88,9 @@ const Sidebar = () => {
         <div className="flex flex-col mt-5">
           <span className="text-muted-foreground text-sm mb-2">Controls</span>
           {__sidebarControls.map((op, i) => (
-            <>
+            <div key={i}>
               {op?.link ? (
-                <Link href={op?.link} key={i}>
+                <Link href={op?.link}>
                   <div
                     onClick={() => {
                       navOpClickHandler(op);
@@ -107,7 +106,6 @@ const Sidebar = () => {
                 </Link>
               ) : (
                 <div
-                  key={i}
                   onClick={() => {
                     navOpClickHandler(op);
                   }}
@@ -120,7 +118,7 @@ const Sidebar = () => {
                   <span>{op.name}</span>
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       </div>

@@ -22,12 +22,12 @@ const poppins = Poppins({
 const CustomTable = ({
   fields,
   data,
-  caption,
+  caption = "Fetching data...",
   clickCb,
 }: {
   fields: string[];
   data: TableCellInterface[][];
-  caption: string;
+  caption?: string;
   clickCb?: (item: any) => void;
 }) => {
   const clickHandler = (item: any) => {
@@ -67,36 +67,43 @@ const CustomTable = ({
                 clickHandler(item);
               }}
             >
-              {item?.map((field, j) => (
-                <TableCell
-                  key={`${i}+${j}`}
-                  className={cn(
-                    " max-w-[200px] overflow-auto text-[1rem] cursor-pointer",
-                    j !== item?.length - 1 && "border-r"
-                  )}
-                >
-                  <div className={cn("flex")}>
-                    {field.image ? (
-                      <div className="relative h-40 w-40 ">
-                        <Image
-                          src={field.image}
-                          alt="Image"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ) : null}
-                    <pre
+              {item?.map((field, j) => {
+                if (field?.metadata === true) {
+                  // do not render
+                  return null;
+                } else {
+                  return (
+                    <TableCell
+                      key={`${i}+${j}`}
                       className={cn(
-                        poppins.className,
-                        "pl-0 text-[1rem] break-words overflow-scroll"
+                        " max-w-[200px] overflow-auto text-[1rem] cursor-pointer",
+                        j !== item?.length - 1 && "border-r"
                       )}
                     >
-                      {field.value}
-                    </pre>
-                  </div>
-                </TableCell>
-              ))}
+                      <div className={cn("flex")}>
+                        {field.image ? (
+                          <div className="relative h-40 w-40 ">
+                            <Image
+                              src={field.image}
+                              alt="Image"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : null}
+                        <pre
+                          className={cn(
+                            poppins.className,
+                            "pl-0 text-[1rem] break-words overflow-scroll"
+                          )}
+                        >
+                          {field.value}
+                        </pre>
+                      </div>
+                    </TableCell>
+                  );
+                }
+              })}
             </TableRow>
           ))}
         </TableBody>

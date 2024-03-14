@@ -9,7 +9,7 @@ import { items_per_page } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const MovieCasting = () => {
+const Streaming = () => {
   const router = useRouter();
   const [rows, setRows] = useState(1);
   const [movies, setMovies] = useState<TableCellInterface[][]>([]);
@@ -33,15 +33,14 @@ const MovieCasting = () => {
 
   const getMovies = async (skip: number = 0, take: number = 10) => {
     const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-    const usersRes = await fetch(
+    const res = await fetch(
       baseURL + `/api/getMovies?skip=${skip}&take=${take}`,
       {
         cache: "no-store",
       }
     );
-    const data = await usersRes.json();
-    console.log(data);
-    const __users: TableCellInterface[][] = data?.movies?.map((item: any) => [
+    const data = await res.json();
+    const __movies: TableCellInterface[][] = data?.movies?.map((item: any) => [
       {
         field: "id",
         value: item.id,
@@ -73,12 +72,12 @@ const MovieCasting = () => {
       },
     ]);
     setRows(data?.total);
-    setMovies(__users);
+    setMovies(__movies);
   };
 
   const selectMovie = (item: any) => {
     if (item?.id) {
-      router.push(`/dashboard/movies/movie-casting/${item?.id}`);
+      router.push(`/dashboard/streaming/${item?.id}`);
     }
   };
 
@@ -90,7 +89,7 @@ const MovieCasting = () => {
     <div className="p-6 flex gap-10 h-[85vh] overflow-scroll">
       <section className="w-full flex flex-col gap-10">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Casting | Select a movie</h1>
+          <h1 className="text-2xl font-semibold">Streaming | Select a movie</h1>
           <SearchBar
             apiRoute="getMovieByName"
             placeholder="Enter a name"
@@ -113,4 +112,4 @@ const MovieCasting = () => {
   );
 };
 
-export default MovieCasting;
+export default Streaming;

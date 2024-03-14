@@ -18,7 +18,6 @@ export async function POST(req: Request) {
       }
     });
 
-    console.log(res);
     return NextResponse.json({
       message: "Movie cast added successfully",
     });
