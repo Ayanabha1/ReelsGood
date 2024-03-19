@@ -31,20 +31,21 @@ model customer {
 }
 
 model movie {
-    id            Int             @id @default(autoincrement())
-    name          String
-    rating        Float           @default(1)
-    description   String
-    streaming     streaming[]
-    duration      String
-    language      String
-    pg_rating     String
-    trailer_url   String?
-    movie_banner  String?
-    created_at    DateTime        @default(now())
-    updated_at    DateTime        @default(now())
-    movie_picture movie_picture[]
-    movie_cast    movie_cast[]
+    id               Int                @id @default(autoincrement())
+    name             String
+    rating           Float              @default(1)
+    description      String
+    streaming        streaming[]
+    streaming_cinema streaming_cinema[]
+    duration         String
+    language         String
+    pg_rating        String
+    trailer_url      String?
+    movie_banner     String?
+    created_at       DateTime           @default(now())
+    updated_at       DateTime           @default(now())
+    movie_picture    movie_picture[]
+    movie_cast       movie_cast[]
 }
 
 model movie_picture {
@@ -72,15 +73,16 @@ model actor {
 }
 
 model cinema {
-    id         Int         @id @default(autoincrement())
-    name       String
-    rating     Float       @default(1)
-    city       String
-    state      String
-    created_at DateTime    @default(now())
-    updated_at DateTime    @default(now())
-    seat       seat[]
-    streaming  streaming[]
+    id               Int                @id @default(autoincrement())
+    name             String
+    rating           Float              @default(1)
+    city             String
+    state            String
+    created_at       DateTime           @default(now())
+    updated_at       DateTime           @default(now())
+    seat             seat[]
+    streaming        streaming[]
+    streaming_cinema streaming_cinema[]
 }
 
 model seat {
@@ -106,11 +108,21 @@ model streaming {
     id          Int           @id @default(autoincrement())
     movie_id    Int?
     cinema_id   Int?
-    date        DateTime
+    date        DateTime?
     booking     booking[]
     booked_seat booked_seat[]
     movie       movie?        @relation(fields: [movie_id], references: [id])
     cinema      cinema?       @relation(fields: [cinema_id], references: [id])
+}
+
+model streaming_cinema {
+    id        Int     @default(autoincrement())
+    movie_id  Int
+    cinema_id Int
+    movie     movie?  @relation(fields: [movie_id], references: [id])
+    cinema    cinema? @relation(fields: [cinema_id], references: [id])
+
+    @@id([movie_id, cinema_id])
 }
 
 model booking {

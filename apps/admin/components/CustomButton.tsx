@@ -26,7 +26,7 @@ const CustomButton = ({
   type?: "button" | "submit" | "reset" | undefined;
   disabled?: boolean;
   className?: string;
-  onClick?: () => void;
+  onClick?: (args: any) => void;
   loading?: boolean;
 }) => {
   return (

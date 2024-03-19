@@ -114,7 +114,6 @@ const MovieCastingForMovie = ({
 
   const addNewCast = (data: any) => {
     setChanged(true);
-    console.log(data);
     setActors((prev: any) => [...prev, ...data]);
   };
 

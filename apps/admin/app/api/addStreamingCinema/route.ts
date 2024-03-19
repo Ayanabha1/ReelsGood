@@ -4,20 +4,15 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const payload = await req.json();
-
     const movieId = payload?.movie_id;
-    const cast = payload?.cast;
-    const res = await prismaDB.$transaction(async (tx) => {
-      await tx.movie_cast.deleteMany({ where: { movie_id: movieId } });
-      if (cast?.length > 0) {
-        await tx.movie_cast.createMany({
-          data: cast,
-        });
-      }
+    const data = payload?.data;
+    console.log(data);
+    const res = await prismaDB.streaming_cinema.createMany({
+      data: data,
     });
 
     return NextResponse.json({
-      message: "Movie cast added successfully",
+      message: "Streaming cinemas added successfully",
     });
   } catch (error) {
     return NextResponse.json(
