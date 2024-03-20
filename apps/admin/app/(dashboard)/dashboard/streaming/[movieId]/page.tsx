@@ -19,7 +19,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import SearchBar from "@/components/CustomSearch";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon, Trash2Icon } from "lucide-react";
 import CustomButton from "@/components/CustomButton";
@@ -113,8 +112,8 @@ const MovieStreaming = ({
   const [changed, setChanged] = useState(false);
   const [loading, setLoading] = useState(false);
   const [newCinemas, setNewCinemas] = useState<CinemaInterface[]>([]);
-
   const tableFields = ["Cinema", "Cinema Rating", "City", "State", "Added On"];
+
   const getStreamingData = async () => {
     try {
       const baseURL = process.env.NEXT_PUBLIC_BASE_URL;

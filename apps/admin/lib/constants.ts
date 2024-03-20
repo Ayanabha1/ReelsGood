@@ -1,4 +1,3 @@
-import { link } from "fs";
 import {
   LayoutDashboard,
   User,
@@ -8,9 +7,9 @@ import {
   SettingsIcon,
   LogOut,
   Monitor,
-  StarIcon,
   Sparkle,
   Aperture,
+  Code2Icon,
 } from "lucide-react";
 
 export const sidebarOps = [
@@ -36,7 +35,7 @@ export const sidebarOps = [
   },
   {
     name: "Movies Photos",
-    link: "/dashboard/movies/movie-picture",
+    link: "/dashboard/movie-photos",
     icon: Aperture,
   },
   {
@@ -57,6 +56,12 @@ export const sidebarOps = [
 ];
 
 export const sidebarControls = [
+  {
+    name: "APIs",
+    icon: Code2Icon,
+    link: "/dashboard/apis",
+    action: undefined,
+  },
   {
     name: "Settings",
     icon: SettingsIcon,
