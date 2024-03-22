@@ -59,7 +59,8 @@ const Sidebar = () => {
                     }}
                     className={cn(
                       "flex items-center gap-4 py-2 text-muted-foreground cursor-pointer hover:text-black transition-all duration-300 p-2 rounded-lg",
-                      path.includes(op?.link) && "bg-secondary text-white"
+                      path.includes(op?.link) &&
+                        "bg-secondary text-white hover:text-white"
                     )}
                   >
                     <op.icon className="h-5 w-5" />

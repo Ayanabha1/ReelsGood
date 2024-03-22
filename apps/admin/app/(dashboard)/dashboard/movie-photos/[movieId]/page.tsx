@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PlusCircleIcon, Trash2Icon } from "lucide-react";
+import { CloudLightning, PlusCircleIcon, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import React, { ReactElement, useEffect, useState } from "react";
 import {
@@ -16,6 +16,13 @@ import {
 import SearchBar from "@/components/CustomSearch";
 import CustomButton from "@/components/CustomButton";
 import { showError, showSuccess } from "@/lib/commonFunctions";
+import { Input } from "@/components/ui/input";
+import Dropzone from "react-dropzone";
+
+interface CustomFileInterface {
+  url: string;
+  file: File;
+}
 
 const AddCastModal = ({
   trigger,
@@ -24,21 +31,31 @@ const AddCastModal = ({
   trigger: ReactElement;
   clickCb: (data: any) => void;
 }) => {
-  const [actors, setActors] = useState<any>([]);
-  const clickHandler = (item: any) => {
-    let includes = actors?.filter((i: any) => i.id === item.id);
-    if (includes?.length === 0) {
-      setActors((prev: any) => [...prev, { ...item, new: true }]);
+  const [files, setFiles] = useState<CustomFileInterface[]>([]);
+
+  const onDrop = (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    const fileType = file?.type?.split("/")[0];
+    if (fileType !== "image") {
+      showError("Only images are allowed");
+    } else {
+      const reader = new FileReader();
+      let fileUrl: any;
+      reader.onload = () => {
+        fileUrl = reader.result;
+        setFiles((prev) => [...prev, { url: fileUrl, file: file }]);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const removeActor = (item: any) => {
-    setActors((prev: any) => prev.filter((i: any) => i !== item));
+  const removeFile = (file: CustomFileInterface) => {
+    setFiles((prev) => prev?.filter((item) => item !== file));
   };
 
   const handleSubmit = () => {
-    clickCb(actors);
-    setActors([]);
+    clickCb(files);
+    setFiles([]);
   };
 
   return (
@@ -46,47 +63,58 @@ const AddCastModal = ({
       <DialogTrigger>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Search for an actor</DialogTitle>
+          <DialogTitle>Select photo</DialogTitle>
           <DialogDescription>
-            <SearchBar
-              apiRoute="getActorByName"
-              placeholder="Enter a name"
-              clickCb={clickHandler}
-              className="mt-2 w-full"
-            />
-            <div className="flex flex-col gap-3 mt-2 max-h-[300px] py-2 overflow-scroll">
-              {actors?.map((item: any, i: number) => (
-                <div className="flex gap-2 items-center w-full" key={i}>
-                  <div className="relative h-14 w-14 rounded-md overflow-hidden">
+            <Dropzone
+              onDrop={(acceptedFiles) => {
+                onDrop(acceptedFiles);
+              }}
+              accept={{
+                "image/*": [".jpeg", ".png"],
+              }}
+            >
+              {({ getRootProps, getInputProps }) => (
+                <section className="text-center border border-dashed rounded-lg border-slate-500 mt-2 cursor-pointer">
+                  <div {...getRootProps()} className="p-10">
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+            {files?.length > 0 ? (
+              <div className="relative flex gap-3 mt-2 max-h-[300px] py-2 overflow-scroll">
+                {files?.map((file: CustomFileInterface, i) => (
+                  <div className="relative h-32 w-32">
                     <Image
-                      src={item?.picture}
-                      className="object-cover"
+                      key={i}
+                      src={file?.url}
                       alt="image"
                       fill
+                      className="object-cover rounded-md shadow-md"
+                    />
+                    <Trash2Icon
+                      className="absolute top-2 right-2 bg-white p-1 rounded-md shadow-md h-7 w-7 cursor-pointer"
+                      color="red"
+                      onClick={() => {
+                        removeFile(file);
+                      }}
                     />
                   </div>
-                  <h1 className="text-xl">{item?.name}</h1>
-                  <Button
-                    className="ml-auto"
-                    variant="ghost"
-                    onClick={() => {
-                      removeActor(item);
-                    }}
-                  >
-                    <Trash2Icon color="red" className="h-5 w-5" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : null}
             <DialogClose className="w-full">
               <Button
                 className="mt-2 w-full"
-                disabled={actors.length === 0}
+                disabled={!files.length}
                 onClick={() => {
                   handleSubmit();
                 }}
               >
-                Add Cast
+                Add Photo(s)
               </Button>
             </DialogClose>
           </DialogDescription>
@@ -106,15 +134,52 @@ const MoviePhotosForMovie = ({
   const [mounted, setMounted] = useState(false);
   const [changed, setChanged] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [images, setImages] = useState<any[]>([]);
+  const [files, setFiles] = useState<CustomFileInterface[]>([]);
 
-  const removeActor = (item: any) => {
+  const removePicture = (item: any) => {
     setChanged(true);
-    setActors((prev: any) => prev.filter((i: any) => i !== item));
+    console.log(item);
+    setImages((prev: any) => prev.filter((i: any) => i !== item));
+    setFiles((prev) =>
+      prev?.filter((file: CustomFileInterface) => file?.url !== item?.picture)
+    );
   };
 
-  const addNewCast = (data: any) => {
+  const addNewPicture = (data: any) => {
     setChanged(true);
-    setActors((prev: any) => [...prev, ...data]);
+    setFiles((prev) => [...prev, ...data]);
+    const __images = data?.map((i: CustomFileInterface) => ({
+      new: true,
+      picture: i?.url,
+    }));
+    setImages((prev: any) => [...prev, ...__images]);
+  };
+
+  const uploadImage = async (file: CustomFileInterface) => {
+    const fd = new FormData();
+    fd.append("file", file?.file);
+    fd.append("upload_preset", "reelsgood");
+    fd.append("cloud_name", "dylg9n7hq");
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dylg9n7hq/image/upload",
+        {
+          method: "POST",
+          body: fd,
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        return data?.url;
+      } else {
+        console.error("Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
   const updateCast = async () => {
@@ -122,15 +187,32 @@ const MoviePhotosForMovie = ({
     try {
       const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
       const movieId = movie?.id;
-      const data = actors?.map((item: any) => ({
+      files?.map((file) => {
+        uploadImage(file);
+      });
+      const newUrlsPromises = files?.map((file) => uploadImage(file));
+      const newUrls = await Promise.all(newUrlsPromises);
+      console.log(newUrls);
+
+      let data: any = [];
+
+      images?.forEach((i) => {
+        if (!i?.new) {
+          data?.push(i);
+        }
+      });
+
+      const newImages = newUrls?.map((url: any) => ({
         movie_id: movieId,
-        actor_id: item?.id,
+        picture: url,
       }));
+
+      data = [...data, ...newImages];
       const payload = {
         movie_id: movieId,
-        cast: data,
+        images: data,
       };
-      const res = await fetch(baseURL + "/api/updateMovieCast", {
+      const res = await fetch(baseURL + "/api/updateMoviePictures", {
         method: "POST",
         body: JSON.stringify(payload),
         cache: "no-store",
@@ -139,10 +221,11 @@ const MoviePhotosForMovie = ({
           throw new Error();
         }
       });
-      showSuccess("Movie cast updated successfully");
+      showSuccess("Movie images updated successfully");
     } catch (error) {
-      showError("Could not update movie cast");
+      showError("Could not update movie images");
     }
+    setChanged(false);
     setLoading(false);
   };
 
@@ -150,15 +233,16 @@ const MoviePhotosForMovie = ({
     const { movieId } = params;
     const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
     const usersRes = await fetch(
-      baseURL + `/api/getMovieById?movie_id=${movieId}`,
+      baseURL + `/api/getMoviePhotos?movie_id=${movieId}`,
       {
         cache: "no-store",
       }
     );
     const data = await usersRes.json();
-    setMovie(data?.data);
-    const __actors = data?.data?.movie_cast?.map((item: any) => item?.actor);
-    setActors(__actors);
+    setImages(data?.data);
+    setMovie(data?.movie);
+    // const __actors = data?.data?.movie_cast?.map((item: any) => item?.actor);
+    // setActors(__actors);
   };
 
   useEffect(() => {
@@ -175,10 +259,10 @@ const MoviePhotosForMovie = ({
       <div className="flex items-center gap-3">
         <h1 className="text-2xl">{movie?.name} Movie Photos</h1>
         <AddCastModal
-          clickCb={addNewCast}
+          clickCb={addNewPicture}
           trigger={
             <Button variant="ghost" className="flex items-center gap-2 text-md">
-              <PlusCircleIcon /> <span>Add New Cast</span>
+              <PlusCircleIcon /> <span>Add New Photo</span>
             </Button>
           }
         />
@@ -194,7 +278,7 @@ const MoviePhotosForMovie = ({
         </CustomButton>
       </div>
       <div className="flex gap-5 flex-wrap w-full">
-        {actors?.map((item: any, i: number) => (
+        {images?.map((item: any, i: number) => (
           <Card
             key={i}
             className="flex flex-col h-[350px] w-[15%] min-w-[250px] shadow  overflow-hidden cursor-pointer"
@@ -211,17 +295,16 @@ const MoviePhotosForMovie = ({
                 fill
                 className="object-cover"
               />
-              <Button
-                className="ml-auto z-[50] absolute bottom-2 right-2 p-2"
-                variant="outline"
-                onClick={() => {
-                  removeActor(item);
-                }}
-              >
-                <Trash2Icon className="h-5 w-5" />
-              </Button>{" "}
             </div>
-            <h1 className="m-auto text-lg">{item?.name}</h1>
+            <Button
+              className="w-full rounded-tl-none rounded-tr-none"
+              variant="destructive"
+              onClick={() => {
+                removePicture(item);
+              }}
+            >
+              <Trash2Icon className="h-5 w-5" />
+            </Button>{" "}
           </Card>
         ))}
       </div>

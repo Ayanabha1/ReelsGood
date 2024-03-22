@@ -22,7 +22,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import React, { ReactElement, useEffect, useState } from "react";
-import SearchBar from "@/components/CustomSearch";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon, Trash2Icon } from "lucide-react";
 import CustomButton from "@/components/CustomButton";

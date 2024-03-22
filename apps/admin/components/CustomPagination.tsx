@@ -11,6 +11,7 @@ import {
 } from "./ui/pagination";
 import { items_per_page } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const CustomPagination = ({
   currPage,
@@ -22,17 +23,29 @@ const CustomPagination = ({
   selectPage: (page: number) => void;
 }) => {
   const [pages, setPages] = useState<PagesInterface[]>([]);
+  const router = useRouter();
+  const pathname = usePathname();
   const nextPageClick = () => {
     if (currPage === pages.length) {
       return;
     }
     selectPage(currPage + 1);
+
+    router.push(`${pathname}?page=${currPage + 1}`);
   };
   const prevPageClick = () => {
     if (currPage === 1) {
       return;
     }
     selectPage(currPage - 1);
+    router.push(`${pathname}?page=${currPage - 1}`);
+  };
+
+  const pageClickHandler = (page: number) => {
+    if (currPage !== page) {
+      selectPage(page);
+      router.push(`${pathname}?page=${page}`);
+    }
   };
 
   const getPages = () => {
@@ -49,7 +62,7 @@ const CustomPagination = ({
   }, [totalRows]);
 
   return (
-    <Pagination className="cursor-pointer">
+    <Pagination className="cursor-pointer mb-10 pb-10">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious onClick={prevPageClick} />
@@ -61,9 +74,7 @@ const CustomPagination = ({
             <PaginationLink
               isActive={currPage === item?.val}
               onClick={() => {
-                if (currPage !== item?.val) {
-                  selectPage(item.val);
-                }
+                pageClickHandler(item.val);
               }}
             >
               {item?.val}

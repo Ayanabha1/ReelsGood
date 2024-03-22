@@ -5,6 +5,7 @@ import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
 import { items_per_page } from "@/lib/constants";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Users = () => {
@@ -12,6 +13,8 @@ const Users = () => {
   const [users, setUsers] = useState<TableCellInterface[][]>([]);
   const [currPage, setCurrPage] = useState<number>(1);
   const tableFields = ["First Name", "Last Name", "Email", "Customer Since"];
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get("page");
 
   const selectPage = (page: number) => {
     if (currPage === page) return;
@@ -53,7 +56,9 @@ const Users = () => {
   };
 
   useEffect(() => {
-    getUsers(0, items_per_page);
+    const page = parseInt(pageNumber!) || 1;
+    getUsers(page * items_per_page - items_per_page, items_per_page);
+    setCurrPage(page);
   }, []);
 
   return (

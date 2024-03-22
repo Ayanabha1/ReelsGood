@@ -1,12 +1,11 @@
 "use client";
-import AddItem from "@/components/AddItem";
 import CustomPagination from "@/components/CustomPagination";
 import SearchBar from "@/components/CustomSearch";
 import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
 import { items_per_page } from "@/lib/constants";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Streaming = () => {
@@ -23,6 +22,8 @@ const Streaming = () => {
     "Language",
     "Added On",
   ];
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get("page");
 
   const selectPage = (page: number) => {
     if (currPage === page) return;
@@ -31,7 +32,7 @@ const Streaming = () => {
     getMovies(page * items_per_page - items_per_page, items_per_page);
   };
 
-  const getMovies = async (skip: number = 0, take: number = 10) => {
+  const getMovies = async (skip: number = 0, take: number = items_per_page) => {
     const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
     const res = await fetch(
       baseURL + `/api/getMovies?skip=${skip}&take=${take}`,
@@ -80,9 +81,10 @@ const Streaming = () => {
       router.push(`/dashboard/streaming/${item?.id}`);
     }
   };
-
   useEffect(() => {
-    getMovies(0, items_per_page);
+    const page = parseInt(pageNumber!) || 1;
+    getMovies(page * items_per_page - items_per_page, items_per_page);
+    setCurrPage(page);
   }, []);
 
   return (

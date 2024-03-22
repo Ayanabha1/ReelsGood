@@ -1,3 +1,4 @@
+import CustomBreadcrumb from "@/components/CustomBreadcrumb";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import React, { ReactNode } from "react";
@@ -12,6 +13,9 @@ const layout = ({ children }: { children: ReactNode }) => {
         <nav>
           <Navbar />
         </nav>
+        <div className="pl-6">
+          <CustomBreadcrumb />
+        </div>
         <section className="h-full ">{children}</section>
       </div>
     </main>

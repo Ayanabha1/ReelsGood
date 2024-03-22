@@ -1,4 +1,3 @@
-import CustomTable from "@/components/CustomTable";
 import IncreasePercentage from "@/components/IncreasePercentage";
 import Transactions from "@/components/Transactions";
 import { Button } from "@/components/ui/button";

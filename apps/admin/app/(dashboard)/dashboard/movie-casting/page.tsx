@@ -1,12 +1,12 @@
 "use client";
-import AddItem from "@/components/AddItem";
+
 import CustomPagination from "@/components/CustomPagination";
 import SearchBar from "@/components/CustomSearch";
 import CustomTable from "@/components/CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
 import { TableCellInterface } from "@/lib/commonInterfaces";
 import { items_per_page } from "@/lib/constants";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const MovieCasting = () => {
@@ -23,6 +23,8 @@ const MovieCasting = () => {
     "Language",
     "Added On",
   ];
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get("page");
 
   const selectPage = (page: number) => {
     if (currPage === page) return;
@@ -83,7 +85,9 @@ const MovieCasting = () => {
   };
 
   useEffect(() => {
-    getMovies(0, items_per_page);
+    const page = parseInt(pageNumber!) || 1;
+    getMovies(page * items_per_page - items_per_page, items_per_page);
+    setCurrPage(page);
   }, []);
 
   return (

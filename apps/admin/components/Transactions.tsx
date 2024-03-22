@@ -2,16 +2,19 @@
 import React, { useEffect, useState } from "react";
 import CustomTable from "./CustomTable";
 import { getDate2 } from "@/lib/commonFunctions";
-import { PagesInterface, TableCellInterface } from "@/lib/commonInterfaces";
+import { TableCellInterface } from "@/lib/commonInterfaces";
 import CustomPagination from "./CustomPagination";
 import { items_per_page } from "@/lib/constants";
 import SearchBar from "./CustomSearch";
+import { useSearchParams } from "next/navigation";
 
 const Transactions = () => {
   const [currPage, setCurrPage] = useState<number>(1);
   const [paymentData, setPaymentData] = useState<TableCellInterface[][]>([]);
   const [rows, setRows] = useState(1);
   const tableFields = ["Name", "Status", "Date", "Amount"];
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get("page");
 
   const selectPage = (page: number) => {
     if (currPage === page) return;
@@ -56,8 +59,9 @@ const Transactions = () => {
   };
 
   useEffect(() => {
-    getPayments(0, items_per_page);
-    setCurrPage(1);
+    const page = parseInt(pageNumber!) || 1;
+    getPayments(page * items_per_page - items_per_page, items_per_page);
+    setCurrPage(page);
   }, []);
 
   return (

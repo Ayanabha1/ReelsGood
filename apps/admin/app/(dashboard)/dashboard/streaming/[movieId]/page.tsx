@@ -6,8 +6,7 @@ import {
   MovieInterface,
   TableCellInterface,
 } from "@/lib/commonInterfaces";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { ReactElement, useEffect, useState } from "react";
 import {
   Dialog,
@@ -23,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { PlusCircleIcon, Trash2Icon } from "lucide-react";
 import CustomButton from "@/components/CustomButton";
 import { Card } from "@/components/ui/card";
+import CustomPagination from "@/components/CustomPagination";
+import { items_per_page } from "@/lib/constants";
 
 interface StreamingInterface {
   cinema: CinemaInterface;
@@ -108,13 +109,27 @@ const MovieStreaming = ({
   const router = useRouter();
   const [tableData, setTableData] = useState<TableCellInterface[][]>([]);
   const [movie, setMovie] = useState<MovieInterface>();
+  const [rows, setRows] = useState(1);
+  const [currPage, setCurrPage] = useState<number>(1);
   const [mounted, setMounted] = useState(false);
   const [changed, setChanged] = useState(false);
   const [loading, setLoading] = useState(false);
   const [newCinemas, setNewCinemas] = useState<CinemaInterface[]>([]);
   const tableFields = ["Cinema", "Cinema Rating", "City", "State", "Added On"];
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get("page");
 
-  const getStreamingData = async () => {
+  const selectPage = (page: number) => {
+    if (currPage === page) return;
+    setCurrPage(page);
+    setTableData([]);
+    getStreamingData(page * items_per_page - items_per_page, items_per_page);
+  };
+
+  const getStreamingData = async (
+    skip: number = 0,
+    take: number = items_per_page
+  ) => {
     try {
       const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
       const movieId = params.movieId;
@@ -222,7 +237,9 @@ const MovieStreaming = ({
 
   useEffect(() => {
     setMounted(true);
-    getStreamingData();
+    const page = parseInt(pageNumber!) || 1;
+    getStreamingData(page * items_per_page - items_per_page, items_per_page);
+    setCurrPage(page);
   }, []);
 
   if (!mounted) {
@@ -285,6 +302,11 @@ const MovieStreaming = ({
         data={tableData}
         clickCb={selectCinema}
         caption="Movie streaming at"
+      />
+      <CustomPagination
+        currPage={currPage}
+        selectPage={selectPage}
+        totalRows={rows}
       />
     </div>
   );
