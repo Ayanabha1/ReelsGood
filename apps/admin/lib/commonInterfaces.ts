@@ -15,6 +15,21 @@ export interface PagesInterface {
   val: number;
 }
 
+export interface SeatGroupInterface {
+  id: number | string;
+  name: string;
+  price: number | string;
+}
+
+export interface SeatInterface {
+  cinema_id: number | string;
+  id: number | string;
+  is_seat: boolean;
+  row: number | string;
+  primary_id: number | string;
+  seat_group: SeatGroupInterface[];
+}
+
 export interface CinemaInterface {
   id: number | string;
   name: string;
@@ -22,6 +37,8 @@ export interface CinemaInterface {
   state: string;
   rating: number;
   created_at: Date;
+  operating_since?: Date;
+  seats?: SeatInterface[];
 }
 
 export interface MovieInterface {

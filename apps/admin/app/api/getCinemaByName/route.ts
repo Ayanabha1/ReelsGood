@@ -11,7 +11,11 @@ export async function GET(req: Request) {
     }
     let cinemas = await prismaDB.cinema.findMany({
       where: {
-        name: { contains: __searchParam, mode: "insensitive" },
+        OR: [
+          { name: { contains: __searchParam, mode: "insensitive" } },
+          { city: { contains: __searchParam, mode: "insensitive" } },
+          { state: { contains: __searchParam, mode: "insensitive" } },
+        ],
       },
     });
     return NextResponse.json({

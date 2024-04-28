@@ -10,6 +10,7 @@ import {
   Sparkle,
   Aperture,
   Code2Icon,
+  ArmchairIcon,
 } from "lucide-react";
 
 export const sidebarOps = [
@@ -34,6 +35,16 @@ export const sidebarOps = [
     icon: Film,
   },
   {
+    name: "Actors",
+    link: "/dashboard/actors",
+    icon: Sparkles,
+  },
+  {
+    name: "Streaming",
+    link: "/dashboard/streaming",
+    icon: Monitor,
+  },
+  {
     name: "Movies Photos",
     link: "/dashboard/movie-photos",
     icon: Aperture,
@@ -44,14 +55,9 @@ export const sidebarOps = [
     icon: Sparkle,
   },
   {
-    name: "Streaming",
-    link: "/dashboard/streaming",
-    icon: Monitor,
-  },
-  {
-    name: "Actors",
-    link: "/dashboard/actors",
-    icon: Sparkles,
+    name: "Cinema Seats",
+    link: "/dashboard/cinema-seats",
+    icon: ArmchairIcon,
   },
 ];
 
