@@ -10,13 +10,6 @@ const config = {
   ],
   prefix: "",
   theme: {
-    screens: {
-      xsm: "500px",
-      sm: "640px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -29,7 +22,6 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        main_bg_col: "rgb(9,9,11)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
@@ -37,7 +29,7 @@ const config = {
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "rgb(110,98,229)",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
